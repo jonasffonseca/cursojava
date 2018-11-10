@@ -32,12 +32,10 @@ public class Exercicio_Matriz_2 {
 						System.out.println("UP: " + up);
 					}
 					if (j < mat[i].length - 1) {
-						System.out.println(mat[i].length - 1);
 						int right = mat[i][j + 1];
 						System.out.println("Right: " + right);
 					}
 					if (i < mat.length - 1) {
-						System.out.println(mat.length - 1);
 						int down = mat[i + 1][j];
 						System.out.println("Down: " + down);
 					}
