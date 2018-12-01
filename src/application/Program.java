@@ -1,57 +1,37 @@
 package application;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import entities.ImportedProduct;
-import entities.Product;
-import entities.UsedProduct;
+import model.entities.Account;
+import model.exeptions.DomainException;
 
 public class Program {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		List<Product> product = new ArrayList<>();
-
-		System.out.print("Enter the number of products: ");
-		int n = sc.nextInt();
-
-		for (int i = 1; i <= n; i++) {
-			System.out.println("Product #" + i + " data:");
-			System.out.print("Common, used or imported (c/u/i)? ");
-			char option = sc.next().charAt(0);
+		try {
+			System.out.println("Enter account data");
+			System.out.print("Number: ");
+			Integer number = sc.nextInt();
+			System.out.print("Holder: ");
+			String holder = sc.nextLine();
 			sc.nextLine();
-			System.out.print("Name: ");
-			String name = sc.nextLine();
-			System.out.print("Price: ");
-			double price = sc.nextDouble();
-
-			if (option == 'u') {
-				System.out.print("manufacture date (DD/MM/YYYY): ");
-				Date manufactureDate = sdf.parse(sc.next());
-				product.add(new UsedProduct(name, price, manufactureDate));
-			} else if (option == 'i') {
-				System.out.print("Customs fee: ");
-				double customsFee = sc.nextDouble();
-				product.add(new ImportedProduct(name, price, customsFee));
-			} else if (option == 'c') {
-				product.add(new Product(name, price));
-			}
-
+			System.out.print("Initial balance: ");
+			Double balance = sc.nextDouble();
+			System.out.print("Withdraw limit: ");
+			Double withdrawLimit = sc.nextDouble();
+			Account acc = new Account(number, holder, balance, withdrawLimit);
+			System.out.println();
+			System.out.print("Enter amount for withdraw: ");
+			Double withdrawAmmount = sc.nextDouble();
+			acc.withdraw(withdrawAmmount);
+			System.out.print("New balance: " + String.format("%.2f", acc.getBalance()));
+		} catch (DomainException e) {
+			System.out.println("Withdraw Error: " + e.getMessage());
 		}
-		System.out.println("PRICE TAGS: ");
-		for (Product prod : product) {
-			System.out.println(prod.priceTag());
-
-		}
-
 		sc.close();
 	}
+
 }
